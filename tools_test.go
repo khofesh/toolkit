@@ -298,3 +298,21 @@ func TestTools_ReadJSON(t *testing.T) {
 		req.Body.Close()
 	}
 }
+
+func TestTools_WriteJSON(t *testing.T) {
+	var testTools Tools
+
+	rr := httptest.NewRecorder()
+	payload := JSONResponse{
+		Error:   false,
+		Message: "foo",
+	}
+
+	headers := make(http.Header)
+	headers.Add("foo", "bar")
+
+	err := testTools.WriteJSON(rr, http.StatusOK, payload, headers)
+	if err != nil {
+		t.Errorf("failed to write JSON: %v", err)
+	}
+}
