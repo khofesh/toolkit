@@ -289,3 +289,18 @@ func (t *Tools) WriteJSON(w http.ResponseWriter, status int, data any, headers .
 
 	return nil
 }
+
+// ErrorJSON takes an error and a status code and generate & sends a JSON error message
+func (t *Tools) ErrorJSON(w http.ResponseWriter, err error, status ...int) error {
+	statusCode := http.StatusBadRequest
+
+	if len(status) > 0 {
+		statusCode = status[0]
+	}
+
+	var payload JSONResponse
+	payload.Error = true
+	payload.Message = err.Error()
+
+	return t.WriteJSON(w, statusCode, payload)
+}
